@@ -1,0 +1,12 @@
+{{#each reports}}
+	<h3>{{fileName}}</h3>
+	<ul class="empty">
+		{{#each messages}}
+			<li>
+				<span class="{{type}} label">{{type}}</span>
+				{{message}}
+				{{#if lastLine}}(L{{lastLine}}:C{{lastColumn}}){{/if}}
+			</li>
+		{{/each}}
+	</ul>
+{{/each}}
