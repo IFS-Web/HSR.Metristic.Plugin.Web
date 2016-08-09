@@ -29,7 +29,17 @@ export class HtmlW3cValidator implements Check {
 						}
 						waitingForFiles--;
 						if(waitingForFiles == 0) {
-							callback(new HtmlReport('W3C HTML Validation', this.reportTemplate, {}, { reports: validations }));
+							let templateData = {
+								reports: validations,
+								statistics: {
+									totalCheckedFiles: filePaths.length,
+									numberOfFiles: validations.length,
+									numberOfMessages: validations.reduce((messages, fileValidations, index) => {
+										return messages + fileValidations.messages.length;
+									}, 0)
+								}
+							};
+							callback(new HtmlReport('W3C HTML Validation', this.reportTemplate, {}, templateData));
 						}
 					});
 				});
