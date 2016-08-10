@@ -1,0 +1,12 @@
+{{#each reports}}
+<h3>{{fileName}}</h3>
+<table class="statistics">
+	{{#each elementUsage}}
+	<tr>
+		<th>{{name}}</th>
+		<td>{{count}}</td>
+		<td><span class="bar" style="width: calc({{count}} * 0.5em)"></span></td>
+	</tr>
+	{{/each}}
+</table>
+{{/each}}
