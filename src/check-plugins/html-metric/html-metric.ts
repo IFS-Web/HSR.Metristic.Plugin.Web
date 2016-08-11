@@ -15,9 +15,13 @@ interface Metric {
 
 export class HtmlMetric implements Check {
 	private reportTemplate: string;
+	private partials: {[name:string]:string};
 
 	constructor(private options: { [name: string]: any }) {
 		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
+		this.partials = {
+			domPartial: FS.readFileSync(Path.join(__dirname,'./templates/domPartial.html'), "utf8")
+		}
 	}
 
 	public execute(directory: string, callback: (report: Report) => {}): void {
@@ -51,7 +55,7 @@ export class HtmlMetric implements Check {
 
 							waitingForFiles--;
 							if(waitingForFiles == 0) {
-								callback(new HtmlReport('W3C HTML Validation', this.reportTemplate, {}, { reports: metrics }));
+								callback(new HtmlReport('HTML metrics', this.reportTemplate, this.partials, { reports: metrics }));
 							}
 						}
 					}, configuration);

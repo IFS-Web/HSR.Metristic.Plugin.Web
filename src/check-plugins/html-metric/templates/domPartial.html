@@ -1,0 +1,11 @@
+<ul class="hierarchical">
+{{#each domElements}}
+	{{#equal type "tag"}}
+	<li>&lt;<strong>{{name}}</strong>&gt;
+		{{#if children}}
+			{{> domPartial domElements=children}}
+		{{/if}}
+	</li>
+	{{/equal}}
+{{/each}}
+</ul>
