@@ -4,13 +4,13 @@
 	{{#each ast.stylesheet.rules}}
 		{{#equal type "rule"}}
 			<li>
-			{{#each selectors}}
-				{{#equal @index 0}}
-					{{this}}
-				{{else}}<!--
-					-->, {{this}}
-				{{/equal}}
-			{{/each}}
+			{{#each selectors}}<!--
+				-->{{#equal @index 0}}<!--
+					-->{{this}}<!--
+				-->{{else}}<!--
+					-->, {{this}}<!--
+				-->{{/equal}}<!--
+			-->{{/each}}
 			</li>
 		{{/equal}}
 	{{/each}}
