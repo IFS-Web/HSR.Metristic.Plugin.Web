@@ -5,11 +5,7 @@
 		{{#equal type "rule"}}
 			<li>
 			{{#each selectors}}<!--
-				-->{{#equal @index 0}}<!--
-					-->{{this}}<!--
-				-->{{else}}<!--
-					-->, {{this}}<!--
-				-->{{/equal}}<!--
+				-->{{this}}{{#unless @last}}, {{/unless}}<!--
 			-->{{/each}}
 			</li>
 		{{/equal}}
