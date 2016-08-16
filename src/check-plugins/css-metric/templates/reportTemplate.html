@@ -1,0 +1,18 @@
+{{#each reports}}
+	<h3>{{fileName}}</h3>
+	<ul>
+	{{#each ast.stylesheet.rules}}
+		{{#equal type "rule"}}
+			<li>
+			{{#each selectors}}<!--
+				-->{{#equal @index 0}}<!--
+					-->{{this}}<!--
+				-->{{else}}<!--
+					-->, {{this}}<!--
+				-->{{/equal}}<!--
+			-->{{/each}}
+			</li>
+		{{/equal}}
+	{{/each}}
+	</ul>
+{{/each}}
