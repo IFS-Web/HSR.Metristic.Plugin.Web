@@ -3,6 +3,7 @@ let FS = require('fs');
 let Glob = require("glob");
 let Htmlparser = require("htmlparser");
 
+import {Barrier} from "../../domain/model/barrier";
 import {Check} from "../../domain/model/check";
 import {Report} from "../../domain/model/report";
 import {HtmlReport} from "../../domain/model/html-report";
@@ -26,7 +27,15 @@ export class HtmlMetric implements Check {
 
 	public execute(directory: string, callback: (report: Report) => {}): void {
 		Glob(Path.join(directory,"**/*.html"), null, (error, filePaths) => {
-			let waitingForFiles: number = filePaths.length;
+			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
+				let report: Report = new HtmlReport(
+					'HTML metrics',
+					this.reportTemplate,
+					this.partials,
+					{ reports: metrics }
+				);
+				callback(report);
+			});
 			let metrics: Metric[] = [];
 
 			filePaths.forEach((filePath) => {
@@ -52,11 +61,7 @@ export class HtmlMetric implements Check {
 									.sort((a,b) => (a.name < b.name) ? -1 : 1),
 								dom: dom
 							});
-
-							waitingForFiles--;
-							if(waitingForFiles == 0) {
-								callback(new HtmlReport('HTML metrics', this.reportTemplate, this.partials, { reports: metrics }));
-							}
+							barrier.finishedTask();
 						}
 					}, configuration);
 					let parser = new Htmlparser.Parser(handler);

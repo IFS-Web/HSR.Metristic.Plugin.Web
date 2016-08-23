@@ -3,6 +3,7 @@ let FS = require('fs');
 let Glob = require("glob");
 let JsHint = require('jshint').JSHINT;
 
+import {Barrier} from "../../domain/model/barrier";
 import {Check} from "../../domain/model/check";
 import {Report} from "../../domain/model/report";
 import {HtmlReport} from "../../domain/model/html-report";
@@ -48,9 +49,17 @@ export class JsStyleCheck implements Check {
 
 	public execute(directory:string, callback:(report:Report) => {}):void {
 		Glob(Path.join(directory,"**/*.js"), null, (error, filePaths) => {
-			let waitingForFiles: number = filePaths.length;
 			let reports: Metric[] = [];
 			let errors: string[] = [];
+			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
+				let report: Report = new HtmlReport(
+					'JS Hint Check',
+					this.reportTemplate,
+					{},
+					{ reports: reports, errors: errors }
+				);
+				callback(report);
+			});
 
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
@@ -62,11 +71,7 @@ export class JsStyleCheck implements Check {
 						JsHint(fileData.toString(), this.configuration);
 						reports.push({ fileName: fileName, report: JsHint.data() });
 					}
-
-					waitingForFiles--;
-					if(waitingForFiles == 0) {
-						callback(new HtmlReport('JS Hint Check', this.reportTemplate, {}, { reports: reports, errors: errors }));
-					}
+					barrier.finishedTask();
 				});
 			});
 		});

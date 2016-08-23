@@ -3,6 +3,7 @@ let FS = require('fs');
 let Glob = require("glob");
 let CssParser = require("css");
 
+import {Barrier} from "../../domain/model/barrier";
 import {Check} from "../../domain/model/check";
 import {Report} from "../../domain/model/report";
 import {HtmlReport} from "../../domain/model/html-report";
@@ -24,7 +25,15 @@ export class CssMetric implements Check {
 
 	public execute(directory: string, callback: (report: Report) => {}): void {
 		Glob(Path.join(directory,"**/*.css"), null, (error, filePaths) => {
-			let waitingForFiles: number = filePaths.length;
+			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
+				let report: Report = new HtmlReport(
+					'CSS metrics',
+					this.reportTemplate,
+					this.partials,
+					{ reports: metrics }
+				);
+				callback(report);
+			});
 			let metrics: Metric[] = [];
 
 			filePaths.forEach((filePath) => {
@@ -34,11 +43,7 @@ export class CssMetric implements Check {
 						fileName: filePath.replace(directory, ''),
 						ast: ast
 					});
-
-					waitingForFiles--;
-					if(waitingForFiles == 0) {
-						callback(new HtmlReport('CSS metrics', this.reportTemplate, this.partials, { reports: metrics }));
-					}
+					barrier.finishedTask();
 				});
 			});
 			// TODO: handle 0 files case
