@@ -71,7 +71,7 @@ export class JsStyleCheck implements Check {
 						JsHint(fileData.toString(), this.configuration);
 						reports.push({ fileName: fileName, report: JsHint.data() });
 					}
-					barrier.finishedTask();
+					barrier.finishedTask(filePath);
 				});
 			});
 		});

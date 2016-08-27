@@ -61,7 +61,7 @@ export class HtmlMetric implements Check {
 									.sort((a,b) => (a.name < b.name) ? -1 : 1),
 								dom: dom
 							});
-							barrier.finishedTask();
+							barrier.finishedTask(filePath);
 						}
 					}, configuration);
 					let parser = new Htmlparser.Parser(handler);

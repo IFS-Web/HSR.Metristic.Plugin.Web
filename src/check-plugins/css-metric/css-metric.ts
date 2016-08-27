@@ -43,7 +43,7 @@ export class CssMetric implements Check {
 						fileName: filePath.replace(directory, ''),
 						ast: ast
 					});
-					barrier.finishedTask();
+					barrier.finishedTask(filePath);
 				});
 			});
 			// TODO: handle 0 files case
