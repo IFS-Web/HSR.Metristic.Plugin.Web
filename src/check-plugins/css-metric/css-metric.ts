@@ -17,14 +17,18 @@ interface Metric {
 export class CssMetric implements Check {
 	private reportTemplate: string;
 	private partials: {[name:string]:string};
+	private errors: Error[] = [];
 
 	constructor(private options: { [name: string]: any }) {
 		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
 		this.partials = {}
 	}
 
-	public execute(directory: string, callback: (report: Report) => {}): void {
+	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
 		Glob(Path.join(directory,"**/*.css"), null, (error, filePaths) => {
+			if(error) {
+				this.errors.push(error);
+			}
 			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
 				let report: Report = new HtmlReport(
 					'CSS metrics',
@@ -32,21 +36,26 @@ export class CssMetric implements Check {
 					this.partials,
 					{ reports: metrics }
 				);
-				callback(report);
+				callback(report, this.errors);
 			});
 			let metrics: Metric[] = [];
 
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
-					let ast = CssParser.parse(fileData.toString());
-					metrics.push({
-						fileName: filePath.replace(directory, ''),
-						ast: ast
-					});
-					barrier.finishedTask(filePath);
+					let relativeFilePath: string = filePath.replace(directory, '');
+					if(fileError || !fileData) {
+						this.errors.push(new Error(`Could not read file ${relativeFilePath}. Error ${fileError.message}`));
+					} else {
+						let ast = CssParser.parse(fileData.toString());
+						metrics.push({
+							fileName: relativeFilePath,
+							ast: ast
+						});
+						barrier.finishedTask(filePath);
+					}
 				});
 			});
-			// TODO: handle 0 files case
+
 			if(filePaths.length == 0) {
 				callback(null);
 			}

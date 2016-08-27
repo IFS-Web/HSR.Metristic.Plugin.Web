@@ -17,6 +17,7 @@ interface Metric {
 export class HtmlMetric implements Check {
 	private reportTemplate: string;
 	private partials: {[name:string]:string};
+	private errors: Error[] = [];
 
 	constructor(private options: { [name: string]: any }) {
 		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
@@ -25,8 +26,11 @@ export class HtmlMetric implements Check {
 		}
 	}
 
-	public execute(directory: string, callback: (report: Report) => {}): void {
+	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
 		Glob(Path.join(directory,"**/*.html"), null, (error, filePaths) => {
+			if(error) {
+				this.errors.push(error);
+			}
 			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
 				let report: Report = new HtmlReport(
 					'HTML metrics',
@@ -34,40 +38,51 @@ export class HtmlMetric implements Check {
 					this.partials,
 					{ reports: metrics }
 				);
-				callback(report);
+				callback(report, this.errors);
 			});
 			let metrics: Metric[] = [];
 
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
-					let configuration: {[name:string]:any} = {
-						verbose: false,
-						ignoreWhitespace: true
-					};
-					let handler = new Htmlparser.DefaultHandler((error, dom) => {
-						if (error) {
-							// TODO handle errors
-						} else {
-							let elementUsage = {};
-							dom.forEach((domElement) => {
-								HtmlMetric.walkDOM(elementUsage, domElement)
-							});
+					let relativeFilePath: string = filePath.replace(directory, '');
+					if(fileError || !fileData) {
+						this.errors.push(new Error(`Could not read file ${relativeFilePath}. Error ${fileError.message}`));
+					} else {
+						let configuration:{[name:string]:any} = {
+							verbose: false,
+							ignoreWhitespace: true
+						};
+						let handler = new Htmlparser.DefaultHandler((error, dom) => {
+							if (error) {
+								this.errors.push(error);
+							} else {
+								let elementUsage = {};
+								dom.forEach((domElement) => {
+									HtmlMetric.walkDOM(elementUsage, domElement)
+								});
 
-							metrics.push({
-								fileName: filePath.replace(directory, ''),
-								elementUsage: (Object.keys(elementUsage).map(
-										(name) => { return { name: name, count: elementUsage[name] } })
+								metrics.push({
+									fileName: relativeFilePath,
+									elementUsage: (Object.keys(elementUsage).map(
+													(name) => {
+														return { name: name, count: elementUsage[ name ] }
+													})
 									)
-									.sort((a,b) => (a.name < b.name) ? -1 : 1),
-								dom: dom
-							});
-							barrier.finishedTask(filePath);
-						}
-					}, configuration);
-					let parser = new Htmlparser.Parser(handler);
-					parser.parseComplete(fileData.toString());
+											.sort((a, b) => (a.name < b.name) ? -1 : 1),
+									dom: dom
+								});
+								barrier.finishedTask(filePath);
+							}
+						}, configuration);
+						let parser = new Htmlparser.Parser(handler);
+						parser.parseComplete(fileData.toString());
+					}
 				});
 			});
+
+			if(filePaths.length == 0) {
+				callback(null);
+			}
 		});
 	}
 

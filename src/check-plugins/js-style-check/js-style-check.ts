@@ -37,6 +37,7 @@ export class JsStyleCheck implements Check {
 		strict: true,
 		unused: true
 	};
+	private errors: Error[] = [];
 
 	constructor(private options:{ [name: string]: any }) {
 		if(options['JsStyleCheck']) {
@@ -47,33 +48,38 @@ export class JsStyleCheck implements Check {
 		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
 	}
 
-	public execute(directory:string, callback:(report:Report) => {}):void {
+	public execute(directory:string, callback:(report:Report, errors?: Error[]) => {}):void {
 		Glob(Path.join(directory,"**/*.js"), null, (error, filePaths) => {
+			if(error) {
+				this.errors.push(error);
+			}
 			let reports: Metric[] = [];
-			let errors: string[] = [];
 			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
 				let report: Report = new HtmlReport(
 					'JS Hint Check',
 					this.reportTemplate,
 					{},
-					{ reports: reports, errors: errors }
+					{ reports: reports }
 				);
-				callback(report);
+				callback(report, this.errors);
 			});
 
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
-					let fileName = filePath.replace(directory, '');
-
-					if(fileError) {
-						errors.push(`Could not read ${fileName}!`);
+					let relativeFilePath: string = filePath.replace(directory, '');
+					if(fileError || !fileData) {
+						this.errors.push(new Error(`Could not read file ${relativeFilePath}. Error ${fileError.message}`));
 					} else {
 						JsHint(fileData.toString(), this.configuration);
-						reports.push({ fileName: fileName, report: JsHint.data() });
+						reports.push({ fileName: relativeFilePath, report: JsHint.data() });
 					}
 					barrier.finishedTask(filePath);
 				});
 			});
+
+			if(filePaths.length == 0) {
+				callback(null);
+			}
 		});
 	}
 }
