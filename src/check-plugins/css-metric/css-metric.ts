@@ -29,6 +29,7 @@ export class CssMetric implements Check {
 			if(error) {
 				this.errors.push(error);
 			}
+			let metrics: Metric[] = [];
 			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
 				let report: Report = new HtmlReport(
 					'CSS metrics',
@@ -38,7 +39,6 @@ export class CssMetric implements Check {
 				);
 				callback(report, this.errors);
 			});
-			let metrics: Metric[] = [];
 
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
