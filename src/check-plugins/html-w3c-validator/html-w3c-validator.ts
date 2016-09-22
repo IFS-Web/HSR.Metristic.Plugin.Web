@@ -9,7 +9,6 @@ import {Barrier} from "../../domain/model/barrier";
 import {Check} from "../../domain/model/check";
 import {Report} from "../../domain/model/report";
 import {HtmlReport} from "../../domain/model/html-report";
-import {ErrorReport} from "../../domain/model/error-report";
 
 
 /**
@@ -115,7 +114,8 @@ export class HtmlW3cValidator implements Check {
 				let responseObject = JSON.parse(body);
 				callback(responseObject.messages);
 			} else {
-				this.errors.push(new Error(`Ẁ3C validation of "${filePath}" failed. Status Code: "${statusCode}", ${(error) ? error+"," : ""} Body: "${body}".`));
+				this.errors.push(new Error(`Ẁ3C validation of "${filePath}" failed. Status Code: "${statusCode}",`+
+					` ${(error) ? error+"," : ""} Body: "${body}".`));
 				callback(null);
 			}
 		});

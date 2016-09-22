@@ -31,6 +31,7 @@ export class HtmlMetric implements Check {
 			if(error) {
 				this.errors.push(error);
 			}
+			let metrics: Metric[] = [];
 			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
 				let report: Report = new HtmlReport(
 					'HTML metrics',
@@ -40,7 +41,6 @@ export class HtmlMetric implements Check {
 				);
 				callback(report, this.errors);
 			});
-			let metrics: Metric[] = [];
 
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
@@ -52,9 +52,9 @@ export class HtmlMetric implements Check {
 							verbose: false,
 							ignoreWhitespace: true
 						};
-						let handler = new Htmlparser.DefaultHandler((error, dom) => {
-							if (error) {
-								this.errors.push(error);
+						let handler = new Htmlparser.DefaultHandler((parseError, dom) => {
+							if (parseError) {
+								this.errors.push(parseError);
 							} else {
 								let elementUsage = {};
 								dom.forEach((domElement) => {
