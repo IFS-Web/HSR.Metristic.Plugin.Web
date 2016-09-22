@@ -27,7 +27,7 @@
 				<h4>Errors ({{report.errors.length}})</h4>
 				<ul class="list-unstyled message-list">
 					{{#each report.errors}}
-					<li><span class="error label">Error</span><p class="content">{{reason}} (L{{line}}:C{{character}})</p></li>
+					<li><span class="error label">Error</span><p class="content">{{reason}} <i>(L{{line}}:C{{character}})</i></p></li>
 					{{/each}}
 				</ul>
 			{{else}}
@@ -39,7 +39,7 @@
 		<div class="col-xs-12 col-md-6">
 			<h4>Functions ({{report.functions.length}})</h4>
 			{{#compare report.functions.length '>' 0}}
-				<table class="table-striped table-condensed">
+				<table class="table table-striped table-condensed">
 					<thead>
 						<tr>
 							<th>Name</th>
