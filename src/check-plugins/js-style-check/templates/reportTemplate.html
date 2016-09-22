@@ -58,9 +58,9 @@
 
 	{{#if report.errors}}
 		<h4>Errors ({{report.errors.length}})</h4>
-		<ul class="list-unstyled">
+		<ul class="list-unstyled message-list">
 			{{#each report.errors}}
-				<li><span class="error label">Error</span> {{reason}} (L{{line}}:C{{character}})</li>
+				<li><span class="error label">Error</span><p class="content">{{reason}} (L{{line}}:C{{character}})</p></li>
 			{{/each}}
 		</ul>
 	{{else}}
