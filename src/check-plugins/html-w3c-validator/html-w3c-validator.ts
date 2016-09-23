@@ -35,12 +35,12 @@ export class HtmlW3cValidator implements Check {
 		this.options['connectionTimeout'] = this.options['connectionTimeout'] || 10000;
 		this.options['fileNamePattern'] = this.options['fileNamePattern'] || "**/*.html";
 
-		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
+		this.reportTemplate = FS.readFileSync(Path.join(__dirname, './templates/reportTemplate.html'), "utf8");
 	}
 
 	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
 		Glob(Path.join(directory, this.options['fileNamePattern']), null, (error, filePaths) => {
-			if(error) {
+			if (error) {
 				this.errors.push(error);
 			}
 			let validations: { fileName: string, messages: any[] }[] = [];
@@ -67,7 +67,7 @@ export class HtmlW3cValidator implements Check {
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
 					let relativeFilePath: string = filePath.replace(directory, '');
-					if(fileError || !fileData) {
+					if (fileError || !fileData) {
 						this.errors.push(new Error(`Could not read file ${relativeFilePath}. Error ${fileError.message}`));
 					} else {
 						this.validate(relativeFilePath, fileData, (validationMessages) => {
@@ -83,7 +83,7 @@ export class HtmlW3cValidator implements Check {
 				});
 			});
 
-			if(filePaths.length == 0) {
+			if (filePaths.length == 0) {
 				callback(null);
 			}
 		});
@@ -114,8 +114,8 @@ export class HtmlW3cValidator implements Check {
 				let responseObject = JSON.parse(body);
 				callback(responseObject.messages);
 			} else {
-				this.errors.push(new Error(`Ẁ3C validation of "${filePath}" failed. Status Code: "${statusCode}",`+
-					` ${(error) ? error+"," : ""} Body: "${body}".`));
+				this.errors.push(new Error(`Ẁ3C validation of "${filePath}" failed. Status Code: "${statusCode}",` +
+					` ${(error) ? error + "," : ""} Body: "${body}".`));
 				callback(null);
 			}
 		});

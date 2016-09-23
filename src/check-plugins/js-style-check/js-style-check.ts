@@ -40,17 +40,17 @@ export class JsStyleCheck implements Check {
 	private errors: Error[] = [];
 
 	constructor(private options:{ [name: string]: any }) {
-		if(options['JsStyleCheck']) {
+		if (options['JsStyleCheck']) {
 			Object.keys(options['JsStyleCheck']).forEach((key) => {
 				this.configuration[key] = options['JsStyleCheck'][key];
 			});
 		}
-		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
+		this.reportTemplate = FS.readFileSync(Path.join(__dirname, './templates/reportTemplate.html'), "utf8");
 	}
 
 	public execute(directory:string, callback:(report:Report, errors?: Error[]) => {}):void {
-		Glob(Path.join(directory,"**/*.js"), null, (error, filePaths) => {
-			if(error) {
+		Glob(Path.join(directory, "**/*.js"), null, (error, filePaths) => {
+			if (error) {
 				this.errors.push(error);
 			}
 			let reports: Metric[] = [];
@@ -67,7 +67,7 @@ export class JsStyleCheck implements Check {
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
 					let relativeFilePath: string = filePath.replace(directory, '');
-					if(fileError || !fileData) {
+					if (fileError || !fileData) {
 						this.errors.push(new Error(`Could not read file ${relativeFilePath}. Error ${fileError.message}`));
 					} else {
 						JsHint(fileData.toString(), this.configuration);
@@ -77,7 +77,7 @@ export class JsStyleCheck implements Check {
 				});
 			});
 
-			if(filePaths.length == 0) {
+			if (filePaths.length == 0) {
 				callback(null);
 			}
 		});

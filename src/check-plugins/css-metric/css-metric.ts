@@ -20,13 +20,13 @@ export class CssMetric implements Check {
 	private errors: Error[] = [];
 
 	constructor(private options: { [name: string]: any }) {
-		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
-		this.partials = {}
+		this.reportTemplate = FS.readFileSync(Path.join(__dirname, './templates/reportTemplate.html'), "utf8");
+		this.partials = {};
 	}
 
 	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
-		Glob(Path.join(directory,"**/*.css"), null, (error, filePaths) => {
-			if(error) {
+		Glob(Path.join(directory, "**/*.css"), null, (error, filePaths) => {
+			if (error) {
 				this.errors.push(error);
 			}
 			let metrics: Metric[] = [];
@@ -43,7 +43,7 @@ export class CssMetric implements Check {
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
 					let relativeFilePath: string = filePath.replace(directory, '');
-					if(fileError || !fileData) {
+					if (fileError || !fileData) {
 						this.errors.push(new Error(`Could not read file ${relativeFilePath}. Error ${fileError.message}`));
 					} else {
 						let ast = CssParser.parse(fileData.toString());
@@ -56,7 +56,7 @@ export class CssMetric implements Check {
 				});
 			});
 
-			if(filePaths.length == 0) {
+			if (filePaths.length == 0) {
 				callback(null);
 			}
 		});
