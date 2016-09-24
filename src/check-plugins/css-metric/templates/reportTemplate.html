@@ -1,6 +1,6 @@
 {{#each reports}}
 	<h3>{{fileName}}</h3>
-	<ul>
+	<ul class="multicol col-3">
 	{{#each ast.stylesheet.rules}}
 		{{#equal type "rule"}}
 			<li>

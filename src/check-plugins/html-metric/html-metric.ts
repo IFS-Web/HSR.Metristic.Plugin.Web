@@ -20,17 +20,18 @@ export class HtmlMetric implements Check {
 	private errors: Error[] = [];
 
 	constructor(private options: { [name: string]: any }) {
-		this.reportTemplate = FS.readFileSync(Path.join(__dirname,'./templates/reportTemplate.html'), "utf8");
+		this.reportTemplate = FS.readFileSync(Path.join(__dirname, './templates/reportTemplate.html'), "utf8");
 		this.partials = {
-			domPartial: FS.readFileSync(Path.join(__dirname,'./templates/domPartial.html'), "utf8")
-		}
+			domPartial: FS.readFileSync(Path.join(__dirname, './templates/domPartial.html'), "utf8")
+		};
 	}
 
 	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
-		Glob(Path.join(directory,"**/*.html"), null, (error, filePaths) => {
-			if(error) {
+		Glob(Path.join(directory, "**/*.html"), null, (error, filePaths) => {
+			if (error) {
 				this.errors.push(error);
 			}
+			let metrics: Metric[] = [];
 			let barrier: Barrier = new Barrier(filePaths.length).then(() => {
 				let report: Report = new HtmlReport(
 					'HTML metrics',
@@ -40,32 +41,31 @@ export class HtmlMetric implements Check {
 				);
 				callback(report, this.errors);
 			});
-			let metrics: Metric[] = [];
 
 			filePaths.forEach((filePath) => {
 				FS.readFile(filePath, (fileError, fileData) => {
 					let relativeFilePath: string = filePath.replace(directory, '');
-					if(fileError || !fileData) {
+					if (fileError || !fileData) {
 						this.errors.push(new Error(`Could not read file ${relativeFilePath}. Error ${fileError.message}`));
 					} else {
 						let configuration:{[name:string]:any} = {
 							verbose: false,
 							ignoreWhitespace: true
 						};
-						let handler = new Htmlparser.DefaultHandler((error, dom) => {
-							if (error) {
-								this.errors.push(error);
+						let handler = new Htmlparser.DefaultHandler((parseError, dom) => {
+							if (parseError) {
+								this.errors.push(parseError);
 							} else {
 								let elementUsage = {};
 								dom.forEach((domElement) => {
-									HtmlMetric.walkDOM(elementUsage, domElement)
+									HtmlMetric.walkDOM(elementUsage, domElement);
 								});
 
 								metrics.push({
 									fileName: relativeFilePath,
 									elementUsage: (Object.keys(elementUsage).map(
 													(name) => {
-														return { name: name, count: elementUsage[ name ] }
+														return { name: name, count: elementUsage[ name ] };
 													})
 									)
 											.sort((a, b) => (a.name < b.name) ? -1 : 1),
@@ -80,21 +80,21 @@ export class HtmlMetric implements Check {
 				});
 			});
 
-			if(filePaths.length == 0) {
+			if (filePaths.length == 0) {
 				callback(null);
 			}
 		});
 	}
 
 	protected static walkDOM(metrics, domElement) {
-		if(domElement.type === 'tag') {
-			if(metrics[domElement.name]) {
+		if (domElement.type === 'tag') {
+			if (metrics[domElement.name]) {
 				metrics[domElement.name]++;
 			} else {
 				metrics[domElement.name] = 1;
 			}
 		}
-		if(domElement.children) {
+		if (domElement.children) {
 			domElement.children.forEach((childDomElement) => {
 				HtmlMetric.walkDOM(metrics, childDomElement);
 			});
