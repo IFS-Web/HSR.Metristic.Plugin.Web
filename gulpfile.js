@@ -1,9 +1,7 @@
 'use strict';
 
 let gulp = require('gulp'),
-	nodemon = require('gulp-nodemon'),
 	ts = require('gulp-typescript'),
-	sass = require('gulp-sass'),
 	sourcemaps = require('gulp-sourcemaps'),
 	jasmine = require('gulp-jasmine'),
 	tslint = require("gulp-tslint");
@@ -11,10 +9,7 @@ let gulp = require('gulp'),
 
 var CONFIGURATION = {
 	sourceDirectory: __dirname+'/src',
-	sourceDirectoryAssets: __dirname+'/src/assets',
-	deploymentDirectoryBase: __dirname+'/dist',
-	deploymentDirectory: __dirname+'/dist/app',
-	deploymentDirectoryAssets: __dirname+'/dist/app/assets',
+	deploymentDirectory: __dirname+'/app',
 	tsLintConfig: {
 		configuration: './tslint.json'
 	}
@@ -24,12 +19,11 @@ var STATIC_FILES = [ 'js', 'html', 'png', 'jpg', 'svg', 'css' ].map(
 );
 
 
+var tsProject = ts.createProject('tsconfig.json');
 gulp.task('typescript', function() {
-	return gulp.src([CONFIGURATION.sourceDirectory+'/**/*.ts'])
-		.pipe(sourcemaps.init())
-		.pipe(ts({module: 'commonjs'})).js
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest(CONFIGURATION.deploymentDirectory));
+	var reporter = ts.reporter.defaultReporter();
+	var tsResult = tsProject.src().pipe(ts(tsProject(reporter)));
+	return tsResult.js.pipe(gulp.dest(tsProject.config.compilerOptions.outDir));
 });
 
 gulp.task('tslint', function() {
@@ -38,28 +32,7 @@ gulp.task('tslint', function() {
 		.pipe(tslint.report());
 });
 
-gulp.task('sass', function () {
-	return gulp.src(CONFIGURATION.sourceDirectoryAssets+'/**/*.scss')
-		.pipe(sourcemaps.init())
-		.pipe(sass().on('error', sass.logError))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest(CONFIGURATION.deploymentDirectoryAssets));
-});
-
-gulp.task('watch', function() {
-	gulp.watch(CONFIGURATION.sourceDirectory+'/**/*.ts', ['typescript']);
-	gulp.watch(CONFIGURATION.sourceDirectoryAssets+'/**/*.scss', ['sass']);
-	gulp.watch(STATIC_FILES, ['deploy static']);
-});
-
-gulp.task('deploy', ['typescript', 'sass', 'deploy static'], function() {});
-
-gulp.task('serve', ['deploy', 'watch'], function() {
-	nodemon({
-		script: CONFIGURATION.deploymentDirectory+'/index.js',
-		ext: 'js html'
-	})
-});
+gulp.task('deploy', ['typescript', 'deploy static'], function() {});
 
 gulp.task('test', ['typescript', 'tslint'], function() {
 	return gulp.src([CONFIGURATION.deploymentDirectoryBase+'/**/*.spec.js'])

@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "Metristic web plugin (HTML, CSS, JS)",
   "main": "app/index.js",
+  "typings": "src/index",
   "scripts": {
     "test": "gulp test"
   },
