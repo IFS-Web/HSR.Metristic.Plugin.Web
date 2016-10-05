@@ -5,10 +5,10 @@ let Request = require('request');
 let DetectCharacterEncoding = require('detect-character-encoding');
 let Domain = require('domain');
 
-import {Barrier} from "../../domain/model/barrier";
-import {Check} from "../../domain/model/check";
-import {Report} from "../../domain/model/report";
-import {HtmlReport} from "../../domain/model/html-report";
+import {Barrier} from "metristic-core";
+import {Check} from "metristic-core";
+import {Report} from "metristic-core";
+import {HtmlReport} from "metristic-core";
 
 
 /**
