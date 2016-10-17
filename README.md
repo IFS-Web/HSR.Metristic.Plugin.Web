@@ -51,20 +51,10 @@ module.exports = {
 ```
 
 
-## How to build the project from source
+## Development / build the project from source
 
-### Global dependencies
+See [HSR.Metristic documentation: development](https://github.com/wasabideveloper/HSR.Metristic#development)
 
-* Node.js / npm
-* Typescript Compiler ```npm install tsc --global```
-* Typings ```npm install typings --global```
-
-### Installation
-
-* Install global dependencies
-* Clone project
-* Run `npm install` to install the dependencies.
-* Install typings depencency `tsd install`
 
 ### Commands
 
@@ -78,10 +68,4 @@ Compile TS and run tests:
 gulp test
 # or
 npm test
-```
-
-### Install new type declarations:
-```shell
-# jasmine example
-tsd query jasmine --action install --save
 ```
