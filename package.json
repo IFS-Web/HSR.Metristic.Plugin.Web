@@ -43,7 +43,8 @@
     "jshint": "^2.9.3",
     "metristic-core": "^0.2.0",
     "path": "^0.12.7",
-    "phantomjs": "^2.1.7",
-    "request": "^2.75.0"
+    "phantomjs-prebuilt": "^2.1.13",
+    "request": "^2.75.0",
+    "webpage": "^0.3.0"
   }
 }
