@@ -14,8 +14,8 @@ import {HtmlReport} from "metristic-core";
  * Page visualizer (Phantom JS)
  *
  * options example:
- * 	JsStyleCheck: {
- *		maxstatements: 5
+ * 	PageVisualizer: {
+ *		filePatterns: ['** /test.html', '** /SpecRunner.html']
  * 	}
  */
 export class PageVisualizer implements Check {
@@ -27,7 +27,7 @@ export class PageVisualizer implements Check {
 
 	constructor(options:{ [name: string]: any }) {
 		this.options = options['PageVisualizer'];
-		this.options['filePatterns'] = this.options['filePatterns'] || ['**/index.html', '**/SpecRunner.html'];
+		this.options['filePatterns'] = this.options['filePatterns'] || ['**/test.html', '**/SpecRunner.html'];
 		this.options['pageSize'] = this.options['pageSize'] || 1152;
 
 		this.reportTemplate = FS.readFileSync(Path.join(__dirname, './templates/reportTemplate.html'), "utf8");
