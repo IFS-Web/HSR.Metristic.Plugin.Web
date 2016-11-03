@@ -1,0 +1,331 @@
+.plugin.html-metric .domStructure [data-element] {
+	border: 2px solid silver;
+	padding: 1rem;
+}
+.plugin.html-metric .domStructure [data-element] + [data-element] {
+	margin-top: 0.5rem;
+}
+.plugin.html-metric .domStructure [data-element="html"] {
+	border: none;
+}
+.plugin.html-metric .domStructure [data-element="body"],
+.plugin.html-metric .domStructure [data-element="head"] {
+	border: none;
+	background: white;
+	box-shadow: 0 0 0.5rem black;
+}
+.plugin.html-metric .domStructure [data-element="div"] {
+	border-color: gray;
+	background: gainsboro;
+}
+.plugin.html-metric .domStructure [data-element="span"],
+.plugin.html-metric .domStructure [data-element="i"],
+.plugin.html-metric .domStructure [data-element="strong"],
+.plugin.html-metric .domStructure [data-element="address"] {
+	border-color: gray;
+	background: gainsboro;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="article"] {
+	border-color: seagreen;
+	background: darkseagreen;
+}
+.plugin.html-metric .domStructure [data-element="main"],
+.plugin.html-metric .domStructure [data-element="section"],
+.plugin.html-metric .domStructure [data-element="aside"],
+.plugin.html-metric .domStructure [data-element="nav"] {
+	border-color: saddlebrown;
+	background: bisque;
+}
+.plugin.html-metric .domStructure [data-element="main"]::before,
+.plugin.html-metric .domStructure [data-element="section"]::before,
+.plugin.html-metric .domStructure [data-element="aside"]::before,
+.plugin.html-metric .domStructure [data-element="nav"]::before {
+	content: attr(data-element);
+	left: -1rem;
+	top: -1rem;
+	position: relative;
+	padding: 0.25rem 1rem;
+	background: saddlebrown;
+	font-size: 0.9rem;
+	color: white;
+}
+
+.plugin.html-metric .domStructure [data-element="header"],
+.plugin.html-metric .domStructure [data-element="footer"] {
+	border-color: dodgerblue;
+	background: skyblue;
+}
+
+
+.plugin.html-metric .domStructure [data-element="a"],
+.plugin.html-metric .domStructure [data-element="small"],
+.plugin.html-metric .domStructure [data-element="time"] {
+	margin-left: 2rem;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="a"]::before,
+.plugin.html-metric .domStructure [data-element="small"]::before,
+.plugin.html-metric .domStructure [data-element="time"]::before {
+	position: absolute;
+	margin-left: -2rem;
+	margin-top: -0.75rem;
+}
+.plugin.html-metric .domStructure [data-element="small"], .plugin.html-metric .domStructure [data-element="time"] {
+	border-color: gray;
+	background: gainsboro;
+}
+.plugin.html-metric .domStructure [data-element="small"] > ul > * {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	margin-righht: 1rem;
+}
+.plugin.html-metric .domStructure [data-element="small"]::before {
+	content: "⚖";
+}
+.plugin.html-metric .domStructure [data-element="a"] {
+	border-color: dodgerblue;
+	background: skyblue;
+	padding: 0 0.25rem;
+}
+.plugin.html-metric .domStructure [data-element="a"]::before {
+	content: "🔗";
+}
+.plugin.html-metric .domStructure [data-element="time"]::before {
+	content: "⌚";
+}
+
+
+.plugin.html-metric .domStructure [data-element="meta"],
+.plugin.html-metric .domStructure [data-element="h1"],
+.plugin.html-metric .domStructure [data-element="h2"],
+.plugin.html-metric .domStructure [data-element="h3"],
+.plugin.html-metric .domStructure [data-element="h4"],
+.plugin.html-metric .domStructure [data-element="h5"] {
+	border-color: black;
+	background: silver;
+	margin: 1rem 0;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="p"] {
+	border: none;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+	padding: 0 0.5rem;
+	padding-bottom: 0.5rem;
+	background: none;
+}
+.plugin.html-metric .domStructure [data-element="p"] > ul > * {
+	margin-top: 0.5rem;
+}
+
+
+.plugin.html-metric .domStructure [data-element="meta"],
+.plugin.html-metric .domStructure [data-element="link"],
+.plugin.html-metric .domStructure [data-element="title"] {
+	margin: 0;
+	margin-left: 3rem;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="meta"]::before,
+.plugin.html-metric .domStructure [data-element="link"]::before,
+.plugin.html-metric .domStructure [data-element="title"]::before {
+	content: attr(data-element);
+	position: absolute;
+	margin-left: -3rem;
+	margin-top: -0.75rem;
+	font-size: 0.9rem;
+}
+.plugin.html-metric .domStructure [data-element="link"] {
+	border-color: seagreen;
+	background: darkseagreen;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="title"] {
+	border-color: saddlebrown;
+}
+
+
+.plugin.html-metric .domStructure [data-element="form"] {
+	border-color: blueviolet;
+	background: lavender;
+}
+.plugin.html-metric .domStructure [data-element="fieldset"] {
+	border-color: gray;
+	border-style: dashed;
+	background: silver;
+}
+.plugin.html-metric .domStructure [data-element="legend"] {
+	border: none;
+	background: none;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="legend"]::before {
+	content: "legend";
+	font-size: 0.9rem;
+}
+.plugin.html-metric .domStructure [data-element="datalist"] {
+	display: none;
+}
+.plugin.html-metric .domStructure [data-element="select"] {
+	border: 1px solid black;
+	font-size: 0.9rem;
+	padding: 0 0.5rem;
+}
+.plugin.html-metric .domStructure [data-element="select"]::before {
+	content: "select ▾";
+}
+.plugin.html-metric .domStructure [data-element="select"] > ul {
+	display: none;
+}
+
+.plugin.html-metric .domStructure [data-element="button"],
+.plugin.html-metric .domStructure [data-element="input"],
+.plugin.html-metric .domStructure [data-element="textarea"],
+.plugin.html-metric .domStructure [data-element="output"] {
+	border: none;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="button"] * {
+	display: none;
+}
+
+/* lists, table */
+.plugin.html-metric .domStructure [data-element="ul"],
+.plugin.html-metric .domStructure [data-element="ol"],
+.plugin.html-metric .domStructure [data-element="dl"],
+.plugin.html-metric .domStructure [data-element="table"] {
+	border: none;
+	background: none;
+}
+.plugin.html-metric .domStructure [data-element="ul"]::before,
+.plugin.html-metric .domStructure [data-element="ol"]::before,
+.plugin.html-metric .domStructure [data-element="dl"]::before,
+.plugin.html-metric .domStructure [data-element="table"]::before {
+	font-size: 4rem;
+	line-height: 4rem;
+}
+.plugin.html-metric .domStructure [data-element="ul"]::before {
+	content: "⋮";
+}
+.plugin.html-metric .domStructure [data-element="ol"]::before {
+	content: "⋮☰";
+}
+.plugin.html-metric .domStructure [data-element="dl"]::before {
+	content: "┇⚏";
+}
+.plugin.html-metric .domStructure [data-element="ul"] > ul,
+.plugin.html-metric .domStructure [data-element="ol"] > ul,
+.plugin.html-metric .domStructure [data-element="dl"] > ul,
+.plugin.html-metric .domStructure [data-element="table"] > ul {
+	display: none;
+}
+.plugin.html-metric .domStructure [data-element="table"]::before {
+	content: "▦";
+}
+
+
+
+
+.plugin.html-metric .domStructure [data-element="button"]::before {
+	content: "🔳";
+}
+.plugin.html-metric .domStructure [data-element="input"]::before,
+.plugin.html-metric .domStructure [data-element="textarea"]::before {
+	content: "▭";
+	font-size: 2rem;
+}
+.plugin.html-metric .domStructure [data-element="output"]::before {
+	content: "▬";
+}
+
+.plugin.html-metric .domStructure [data-element="label"] {
+	border: none;
+	font-size: 2rem;
+	margin-top: 0;
+	padding-top: 0.25rem;
+	padding-left: 0;
+	padding-bottom: 0.25rem;
+}
+.plugin.html-metric .domStructure [data-element="label"] > * {;
+	display: inline-block;
+}
+.plugin.html-metric .domStructure [data-element="label"]::before {
+	content: "🏷";
+}
+
+.plugin.html-metric .domStructure [data-element="img"] {
+	border: none;
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="img"]::before,
+.plugin.html-metric .domStructure [data-element="iframe"]::before,
+.plugin.html-metric .domStructure [data-element="video"]::before,
+.plugin.html-metric .domStructure [data-element="object"]::before,
+.plugin.html-metric .domStructure [data-element="audio"]::before {
+	font-size: 2rem;
+	line-height: 2rem;
+	font-weight: bold;
+}
+.plugin.html-metric .domStructure [data-element="img"],
+.plugin.html-metric .domStructure [data-element="iframe"],
+.plugin.html-metric .domStructure [data-element="video"],
+.plugin.html-metric .domStructure [data-element="audio"],
+.plugin.html-metric .domStructure [data-element="source"],
+.plugin.html-metric .domStructure [data-element="track"],
+.plugin.html-metric .domStructure [data-element="object"] {
+	border: none;
+}
+.plugin.html-metric .domStructure [data-element="img"]::before {
+	content: "⚽";
+}
+.plugin.html-metric .domStructure [data-element="iframe"]::before {
+	content: "۝";
+}
+.plugin.html-metric .domStructure [data-element="video"] {
+	background: black;
+	color: white;
+}
+.plugin.html-metric .domStructure [data-element="video"]::before {
+	content: "🎥";
+}
+.plugin.html-metric .domStructure [data-element="source"],
+.plugin.html-metric .domStructure [data-element="track"] {
+	padding: 0;
+}
+.plugin.html-metric .domStructure [data-element="source"]::before {
+	content: "▹";
+}
+.plugin.html-metric .domStructure [data-element="track"]::before {
+	content: "≞";
+}
+.plugin.html-metric .domStructure [data-element="object"]::before {
+	content: "🐘";
+}
+.plugin.html-metric .domStructure [data-element="audio"]::before {
+	content: "♫";
+}
+
+
+.plugin.html-metric .domStructure [data-element="figure"] {
+	border: none;
+	background: gainsboro;
+	padding: 0;
+	padding-top: 0.5rem;
+}
+.plugin.html-metric .domStructure [data-element="figure"] > ul > [data-element="img"],
+.plugin.html-metric .domStructure [data-element="figure"] > ul > [data-element="iframe"],
+.plugin.html-metric .domStructure [data-element="figure"] > ul > [data-element="video"],
+.plugin.html-metric .domStructure [data-element="figure"] > ul > [data-element="audio"] {
+	width: 100%;
+	text-align: center;
+}
+.plugin.html-metric .domStructure [data-element="figure"] > ul > [data-element="figcaption"] {
+	border: none;
+	background: silver;
+}
+.plugin.html-metric .domStructure [data-element="figure"] > ul > [data-element="img"] {
+	font-size: 4rem;
+	line-height: 4rem;
+	font-weight: bold;
+}

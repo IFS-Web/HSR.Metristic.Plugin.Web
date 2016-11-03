@@ -1,7 +1,8 @@
-<ul class="hierarchical">
+<ul>
 {{#each domElements}}
 	{{#equal type "tag"}}
-	<li>&lt;<strong>{{name}}</strong>&gt;
+	<li data-element="{{name}}" title="{{name}}">
+		<!--<span class="element-name">&lt;<strong>{{name}}</strong>&gt;</span>-->
 		{{#if children}}
 			{{> domPartial domElements=children}}
 		{{/if}}
