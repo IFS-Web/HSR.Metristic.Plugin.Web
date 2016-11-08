@@ -5,7 +5,6 @@
   "main": "app/index.js",
   "typings": "src/index",
   "scripts": {
-    "deploy": "gulp deploy",
     "test": "gulp test",
     "gulp": "gulp",
     "typings": "typings"
