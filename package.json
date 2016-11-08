@@ -5,7 +5,10 @@
   "main": "app/index.js",
   "typings": "src/index",
   "scripts": {
-    "test": "gulp test"
+    "deploy": "gulp deploy",
+    "test": "gulp test",
+    "gulp": "gulp",
+    "typings": "typings"
   },
   "repository": {
     "type": "git",
@@ -27,12 +30,15 @@
   },
   "homepage": "https://github.com/wasabideveloper/HSR.Metristic.Plugin.Web#readme",
   "devDependencies": {
+    "gulp": "^3.9.1",
     "gulp-jasmine": "^2.4.1",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-tslint": "^6.1.2",
     "gulp-typescript": "^3.0.1",
     "jasmine-node": "^1.14.5",
-    "tslint": "^3.15.1"
+    "tslint": "^3.15.1",
+    "typescript": "^2.0.8",
+    "typings": "^1.5.0"
   },
   "dependencies": {
     "css": "^2.2.1",

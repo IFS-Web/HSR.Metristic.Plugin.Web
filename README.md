@@ -33,7 +33,7 @@ var JsStyleCheck = require("metristic-plugin-web").JsStyleCheck;
 
 module.exports = {
 	...
-	
+
 	"webMetrics": {
 		name: 'Web project metrics',
 		description: 'Show metrics of HTML, CSS',
@@ -60,12 +60,14 @@ See [HSR.Metristic documentation: development](https://github.com/wasabidevelope
 
 Deploy app to directory `app`:
 ```shell
-gulp deploy
+npm run gulp deploy
+# or
+npm deploy
 ```
 
 Compile TS and run tests:
 ```shell
-gulp test
+npm run gulp test
 # or
 npm test
 ```
