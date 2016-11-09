@@ -1,16 +1,16 @@
-let Webpage = require('webpage');
-let System = require('system');
+var Webpage = require('webpage');
+var System = require('system');
 
 // phantom typings redeclare 'require' -> not usable
-declare let phantom: any;
+declare var phantom: any;
 
 
-let url: string = System.args[1] || null;
-let imagePath: string = System.args[2] || '/tmp/phantom/'+ Math.floor((Math.random() * 1000000000) + 1) + '.png';
-let pageSize: number = System.args[3] || 1024;
+var url: string = System.args[1] || null;
+var imagePath: string = System.args[2] || '/tmp/phantom/'+ Math.floor((Math.random() * 1000000000) + 1) + '.png';
+var pageSize: number = System.args[3] || 1024;
 
 if(url && url.length > 0) {
-	let page = Webpage.create();
+	var page = Webpage.create();
 	page.viewportSize = { width: pageSize, height: 100 };
 
 	page.open(url, function(status) {
