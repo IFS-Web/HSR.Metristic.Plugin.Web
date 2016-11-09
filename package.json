@@ -1,6 +1,6 @@
 {
   "name": "metristic-plugin-web",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.1.0.1",
   "description": "Metristic web plugin (HTML, CSS, JS)",
   "main": "app/index.js",
   "typings": "src/index",
@@ -47,7 +47,7 @@
     "glob": "^7.1.0",
     "htmlparser": "^1.7.7",
     "jshint": "^2.9.3",
-    "metristic-core": "^0.2.0",
+    "metristic-core": ">1.0.0-beta",
     "path": "^0.12.7",
     "phantomjs-prebuilt": "^2.1.13",
     "request": "^2.75.0",
