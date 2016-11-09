@@ -1,0 +1,14 @@
+{{#each reports}}
+	<h3>{{fileName}}</h3>
+	<ul class="multicol col-3">
+	{{#each ast.stylesheet.rules}}
+		{{#equal type "rule"}}
+			<li>
+			{{#each selectors}}<!--
+				-->{{this}}{{#unless @last}}, {{/unless}}<!--
+			-->{{/each}}
+			</li>
+		{{/equal}}
+	{{/each}}
+	</ul>
+{{/each}}

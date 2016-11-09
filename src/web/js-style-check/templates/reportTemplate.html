@@ -1,0 +1,75 @@
+{{#each reports}}
+	<h3>{{fileName}}</h3>
+	<table class="table-striped table-condensed">
+		<tr>
+			<th>Globals</th>
+			<td>{{report.globals.length}}</td>
+			<td>
+				{{#each report.globals}}
+					{{this}},
+				{{/each}}
+			</td>
+		</tr>
+		<tr>
+			<th>Implieds</th>
+			<td>{{report.implieds.length}}</td>
+			<td>
+				{{#each report.implieds}}
+					{{name}},
+				{{/each}}
+			</td>
+		</tr>
+	</table>
+
+	<div class="row">
+		<div class="col-xs-12 col-md-6">
+			{{#if report.errors}}
+				<h4>Errors ({{report.errors.length}})</h4>
+				<ul class="list-unstyled message-list">
+					{{#each report.errors}}
+					<li><span class="error label">Error</span><p class="content">{{reason}} <i>(L{{line}}:C{{character}})</i></p></li>
+					{{/each}}
+				</ul>
+			{{else}}
+				<h4>Errors</h4>
+				<p class="text-success">&#x2713; No errors ☺</p>
+			{{/if}}
+		</div>
+
+		<div class="col-xs-12 col-md-6">
+			<h4>Functions ({{report.functions.length}})</h4>
+			{{#compare report.functions.length '>' 0}}
+				<table class="table table-striped table-condensed">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th># Statements</th>
+							<th><a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity" target="_blank">Cyclomatic complexity</a></th>
+						</tr>
+					</thead>
+					<tbody>
+					{{#each report.functions}}
+						<tr>
+							<td>
+								<strong>{{#equal name '(empty)'}}function{{else}}{{name}}{{/equal}}</strong>(<!--
+									-->{{#each param}}<!--
+										-->{{this}}{{#unless @last}}, {{/unless}}<!--
+									-->{{/each}}<!--
+								-->)
+							</td>
+							<td>
+								<span class="bar" style="width: calc({{metrics.statements}} * 0.5em)"></span>
+								{{metrics.statements}}
+							</td>
+							<td>
+								<span class="bar" style="width: calc({{metrics.complexity}} * 0.5em)"></span>
+								{{metrics.complexity}}
+							</td>
+						</tr>
+					{{/each}}
+					</tbody>
+				</table>
+			{{/compare}}
+		</div>
+	</div>
+{{/each}}

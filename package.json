@@ -1,0 +1,56 @@
+{
+  "name": "metristic-plugin-web",
+  "version": "1.0.0-beta.1",
+  "description": "Metristic web plugin (HTML, CSS, JS)",
+  "main": "app/index.js",
+  "typings": "src/index",
+  "scripts": {
+    "test": "gulp test",
+    "gulp": "gulp",
+    "typings": "typings",
+    "pack-release": "gulp deploy && (cd ../; zip -r HSR.Metristic.Plugin.Web.zip HSR.Metristic.Plugin.Web -x '.*' -x '*/.*' -x '*/node_modules/*' -x '*/src/*' -x '*/typings/*' -x '*/Dockerfile' -x '*/tsconfig.json' -x '*/tslint.json' -x '*/typings.json' -x '*/gulpfile.js' -x '*/*.log')"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wasabideveloper/HSR.Metristic.Plugin.Web.git"
+  },
+  "keywords": [
+    "Metristic",
+    "plugin",
+    "web",
+    "HTML",
+    "CSS",
+    "JS",
+    "W3C"
+  ],
+  "author": "HSR Hochschule für Technik Rapperswil, T. Blaser",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/wasabideveloper/HSR.Metristic/issues"
+  },
+  "homepage": "https://github.com/wasabideveloper/HSR.Metristic.Plugin.Web#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jasmine": "^2.4.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-tslint": "^6.1.2",
+    "gulp-typescript": "^3.0.1",
+    "jasmine-node": "^1.14.5",
+    "tslint": "^3.15.1",
+    "typescript": "^2.0.8",
+    "typings": "^1.5.0"
+  },
+  "dependencies": {
+    "css": "^2.2.1",
+    "detect-character-encoding": "^0.2.1",
+    "fs": "0.0.1-security",
+    "glob": "^7.1.0",
+    "htmlparser": "^1.7.7",
+    "jshint": "^2.9.3",
+    "metristic-core": "^0.2.0",
+    "path": "^0.12.7",
+    "phantomjs-prebuilt": "^2.1.13",
+    "request": "^2.75.0",
+    "webpage": "^0.3.0"
+  }
+}
