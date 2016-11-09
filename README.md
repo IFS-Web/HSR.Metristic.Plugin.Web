@@ -30,6 +30,7 @@ var HtmlW3cValidator = require("metristic-plugin-web").HtmlW3cValidator;
 var HtmlMetric = require("metristic-plugin-web").HtmlMetric;
 var CssMetric = require("metristic-plugin-web").CssMetric;
 var JsStyleCheck = require("metristic-plugin-web").JsStyleCheck;
+var PageVisualizer = require("metristic-plugin-web").PageVisualizer;
 
 module.exports = {
 	...
@@ -37,14 +38,18 @@ module.exports = {
 	"webMetrics": {
 		name: 'Web project metrics',
 		description: 'Show metrics of HTML, CSS',
-		checks: [StructureMetric, HtmlMetric, CssMetric],
+		checks: [HtmlMetric, CssMetric],
 		options: {}
 	},
 	"webCheck": {
 		name: 'Web project checking',
 		description: 'Validate HTML by W3C and check JS code style',
-		checks: [StructureMetric, HtmlW3cValidator, JsStyleCheck],
-		options: {}
+		checks: [HtmlW3cValidator, JsStyleCheck, PageVisualizer],
+		options: {
+			PageVisualizer: {
+				filePatterns: ['*/test.html', '*/tests.html', '*/testSuite.html', '*/SpecRunner.html']
+			}			
+		}
 	},
 	...
 };
