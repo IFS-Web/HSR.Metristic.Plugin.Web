@@ -1,6 +1,6 @@
 {
   "name": "metristic-plugin-web",
-  "version": "1.0.0-beta.1.0.1",
+  "version": "1.0.0-beta.1.0.2",
   "description": "Metristic web plugin (HTML, CSS, JS)",
   "main": "app/index.js",
   "typings": "src/index",
