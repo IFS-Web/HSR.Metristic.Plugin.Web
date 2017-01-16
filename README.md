@@ -9,7 +9,7 @@ Metristic web check plugin (HTML, CSS, JavaScript).
 
 ## Releases / Production
 
-⬇ Download on the [Release page](https://github.com/wasabideveloper/HSR.Metristic.Plugin.Web/releases)
+⬇ Download on the [Release page](https://github.com/IFS-Web/HSR.Metristic.Plugin.Web/releases)
 
 
 ## Installation
@@ -58,7 +58,7 @@ module.exports = {
 
 ## Development / build the project from source
 
-See [HSR.Metristic documentation: development](https://github.com/wasabideveloper/HSR.Metristic#development)
+See [HSR.Metristic documentation: development](https://github.com/IFS-Web/HSR.Metristic#development)
 
 
 ### Commands
