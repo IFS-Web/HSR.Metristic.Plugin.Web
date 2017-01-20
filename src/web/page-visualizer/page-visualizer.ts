@@ -1,8 +1,10 @@
 let Path = require('path');
 let FS = require('fs');
 let Glob = require("glob");
+let os = require("os");
 var ChildProcess = require('child_process');
 var PhantomJS = require('phantomjs-prebuilt');
+
 
 import {Barrier} from "metristic-core";
 import {Check} from "metristic-core";
@@ -20,7 +22,7 @@ import {HtmlReport} from "metristic-core";
  * 	}
  */
 export class PageVisualizer implements Check {
-	static assetsDirectory: string = '/tmp/phantomCaptures/';
+	static assetsDirectory: string = `${os.tmpdir()}/phantomCaptures/`;
 
 	private reportTemplate: string;
 	private errors: Error[] = [];
