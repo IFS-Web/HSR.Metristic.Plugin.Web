@@ -1,4 +1,9 @@
-{{#each screenshots}}
+{{#each screenshots as |fileScreenShots file|}}
 	<h3>{{file}}</h3>
-	<img style="max-width: 1024px; width: 100%;" src="/assets/plugins/pagevisualizer/{{image}}" alt="Screenshot of {{file}}" />
+	{{#each fileScreenShots}}
+	<figure class="screenshot">
+		<img style="max-width: 1024px; width: {{pageSize}}px" src="/assets/plugins/pagevisualizer/{{image}}" alt="Screenshot of {{file}}" />
+		<figcaption>Resolution: {{pageSize}}px</figcaption>
+	</figure>
+	{{/each}}
 {{/each}}

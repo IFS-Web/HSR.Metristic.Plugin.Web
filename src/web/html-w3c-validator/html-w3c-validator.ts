@@ -2,7 +2,6 @@ let Path = require('path');
 let FS = require('fs');
 let Glob = require("glob");
 let Request = require('request');
-let DetectCharacterEncoding = require('detect-character-encoding');
 let Domain = require('domain');
 
 import {Barrier} from "metristic-core";
@@ -90,14 +89,12 @@ export class HtmlW3cValidator implements Check {
 	}
 
 	private validate(filePath: string, fileData, callback: (validationMessages: any[]) => void): void {
-		let charset: string = DetectCharacterEncoding(fileData).encoding.toLowerCase();
 		let requestConfiguration: any = {
 			url: "https://validator.w3.org/nu/?out=json",
 			method: "POST",
 			headers: {
 				"User-Agent": "Node.js",
-				"content-type": "text/html",
-				"charset": charset
+				"content-type": "text/html"
 			},
 			body: fileData.toString(),
 			timeout: this.options['connectionTimeout']

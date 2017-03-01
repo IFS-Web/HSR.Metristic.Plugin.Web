@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "css": "^2.2.1",
-    "detect-character-encoding": "^0.2.1",
     "fs": "0.0.1-security",
     "glob": "^7.1.0",
     "htmlparser": "^1.7.7",

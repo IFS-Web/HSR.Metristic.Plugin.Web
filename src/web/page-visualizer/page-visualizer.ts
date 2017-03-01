@@ -1,8 +1,10 @@
 let Path = require('path');
 let FS = require('fs');
 let Glob = require("glob");
+let os = require("os");
 var ChildProcess = require('child_process');
 var PhantomJS = require('phantomjs-prebuilt');
+
 
 import {Barrier} from "metristic-core";
 import {Check} from "metristic-core";
@@ -15,11 +17,12 @@ import {HtmlReport} from "metristic-core";
  *
  * options example:
  * 	PageVisualizer: {
- *		filePatterns: ['** /test.html', '** /SpecRunner.html']
+ *		filePatterns: ['** /test.html', '** /SpecRunner.html'],
+ *		pageSize: [320, 960, 1216] // or pageSize: 1152
  * 	}
  */
 export class PageVisualizer implements Check {
-	static assetsDirectory: string = '/tmp/phantomCaptures/';
+	static assetsDirectory: string = `${os.tmpdir()}/phantomCaptures/`;
 
 	private reportTemplate: string;
 	private errors: Error[] = [];
@@ -41,9 +44,9 @@ export class PageVisualizer implements Check {
 
 	public execute(directory:string, callback:(report:Report, errors?: Error[]) => {}):void {
 		this.cleanup();
-		let screenshots: { file:string, image: string}[] = [];
+		let screenshots: { [name: string]: { pageSize:string, image: string}[] } = {};
 		let awaiter: Barrier = new Barrier(this.options['filePatterns'].length).then(() => {
-			if(screenshots.length > 0) {
+			if(Object.keys(screenshots).length > 0) {
 				let report: Report = new HtmlReport(
 					'Page visualizations',
 					this.reportTemplate,
@@ -63,7 +66,7 @@ export class PageVisualizer implements Check {
 		}
 	}
 
-	private findAndRenderPages(directory: string, screenshots: any[], awaiter: Barrier): void {
+	private findAndRenderPages(directory: string, screenshots: { [name: string]: { pageSize:string, image: string}[] }, awaiter: Barrier): void {
 		this.options['filePatterns'].forEach((filePattern) => {
 			Glob(Path.join(directory, filePattern), null, (error, filePaths) => {
 				awaiter.expand(filePaths.length);
@@ -72,31 +75,49 @@ export class PageVisualizer implements Check {
 				}
 
 				filePaths.forEach((filePath) => {
-					let imageName: string = `screenshot-${ Date.now() }-${ Math.floor((Math.random() * 1000000) + 1)}.png`;
-
-					let phantomArgs = [
-						Path.join(__dirname, 'page-renderer.js'),
-						filePath,
-						Path.join(PageVisualizer.assetsDirectory, imageName),
-						this.options['pageSize']
-					];
-					ChildProcess.execFile(PhantomJS.path, phantomArgs, (error, stdout, stderr) => {
-						if(error || stderr) {
-							this.errors.push(error);
-							this.errors.push(stderr);
-							console.log(error, stderr);
-						} else {
-							screenshots.push({
-								file: filePath.replace(directory, ''),
-								image: imageName
-							});
-						}
+					if(Number.isInteger(this.options[ 'pageSize' ])) {
+						this.renderScreenshot(filePath, screenshots, directory, this.options[ 'pageSize' ], awaiter);
+					} else if(Array.isArray(this.options[ 'pageSize' ])) {
+						awaiter.expand(this.options[ 'pageSize' ].length);
+						this.options[ 'pageSize' ].forEach((pageSize) => {
+							this.renderScreenshot(filePath, screenshots, directory, pageSize, awaiter);
+						});
 						awaiter.finishedTask(filePath);
-					});
+					} else {
+						awaiter.finishedTask(filePath);
+					}
 				});
 
 				awaiter.finishedTask(filePattern);
 			});
+		});
+	}
+
+	private renderScreenshot(filePath, screenshots: { [name: string]: { pageSize:string, image: string}[] }, directory:string, pageSize, awaiter:Barrier) {
+		let imageName:string = `screenshot-${ Date.now() }-${ Math.floor((Math.random() * 1000000) + 1)}.png`;
+
+		let phantomArgs = [
+			Path.join(__dirname, 'page-renderer.js'),
+			filePath,
+			Path.join(PageVisualizer.assetsDirectory, imageName),
+			pageSize
+		];
+		ChildProcess.execFile(PhantomJS.path, phantomArgs, (error, stdout, stderr) => {
+			if (error || stderr) {
+				this.errors.push(error);
+				this.errors.push(stderr);
+				console.error(error, stderr);
+			} else {
+				let relativeFilePath = filePath.replace(directory, '');
+				if(!screenshots[relativeFilePath]) {
+					screenshots[relativeFilePath] = [];
+				}
+				screenshots[relativeFilePath].push({
+					pageSize: pageSize,
+					image: imageName
+				});
+			}
+			awaiter.finishedTask(filePath+pageSize);
 		});
 	}
 }
