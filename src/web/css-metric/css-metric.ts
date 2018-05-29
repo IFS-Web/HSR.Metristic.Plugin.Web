@@ -24,7 +24,7 @@ export class CssMetric implements Check {
 		this.partials = {};
 	}
 
-	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
+	public execute(directory: string, callback: (report: Report, errors?: Error[]) => void): void {
 		Glob(Path.join(directory, "**/*.css"), null, (error, filePaths) => {
 			if (error) {
 				this.errors.push(error);

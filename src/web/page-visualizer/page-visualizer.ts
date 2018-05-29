@@ -42,7 +42,7 @@ export class PageVisualizer implements Check {
 		});
 	}
 
-	public execute(directory:string, callback:(report:Report, errors?: Error[]) => {}):void {
+	public execute(directory:string, callback:(report:Report, errors?: Error[]) => void):void {
 		this.cleanup();
 		let screenshots: { [name: string]: { pageSize:string, image: string}[] } = {};
 		let awaiter: Barrier = new Barrier(this.options['filePatterns'].length).then(() => {

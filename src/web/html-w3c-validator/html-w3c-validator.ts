@@ -37,7 +37,7 @@ export class HtmlW3cValidator implements Check {
 		this.reportTemplate = FS.readFileSync(Path.join(__dirname, './templates/reportTemplate.html'), "utf8");
 	}
 
-	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
+	public execute(directory: string, callback: (report: Report, errors?: Error[]) => void): void {
 		Glob(Path.join(directory, this.options['fileNamePattern']), null, (error, filePaths) => {
 			if (error) {
 				this.errors.push(error);

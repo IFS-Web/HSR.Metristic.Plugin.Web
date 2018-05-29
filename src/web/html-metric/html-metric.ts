@@ -29,7 +29,7 @@ export class HtmlMetric implements Check {
 		};
 	}
 
-	public execute(directory: string, callback: (report: Report, errors?: Error[]) => {}): void {
+	public execute(directory: string, callback: (report: Report, errors?: Error[]) => void): void {
 		Glob(Path.join(directory, "**/*.html"), null, (error, filePaths) => {
 			if (error) {
 				this.errors.push(error);
