@@ -36,7 +36,8 @@ export class JsStyleCheck implements Check {
 		shadow: true,
 		strict: true,
 		unused: true,
-		esversion:6
+		esversion:6,
+		globals: {  "console": true }
 	};
 	private errors: Error[] = [];
 
